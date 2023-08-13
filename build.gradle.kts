@@ -1,0 +1,54 @@
+plugins {
+    alias(libs.plugins.detekt)
+    kotlin("jvm") version libs.versions.kotlin
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    }
+
+    configurations.all {
+        resolutionStrategy {
+            failOnNonReproducibleResolution()
+        }
+    }
+
+    afterEvaluate {
+        configureKotlin()
+        configureDetekt()
+    }
+}
+
+fun Project.configureDetekt() {
+    detekt {
+        config.from(rootProject.files("detekt-config.yml"))
+    }
+
+    dependencies {
+        detektPlugins(libs.detekt.formatting)
+        detektPlugins(libs.twitter.compose.rules)
+    }
+}
+
+fun Project.configureKotlin() {
+    kotlin {
+        compilerOptions {
+            allWarningsAsErrors = true
+
+            // enable Compose compiler metrics and reports:
+            // https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
+            val composeCompilerReportsDir = buildDir.resolve("compose")
+            freeCompilerArgs.addAll(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$composeCompilerReportsDir"
+            )
+
+            freeCompilerArgs.addAll(
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=$composeCompilerReportsDir"
+            )
+        }
+    }
+}

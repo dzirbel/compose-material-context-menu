@@ -1,0 +1,17 @@
+[versions]
+compose = "1.4.3" # https://github.com/jetbrains/compose-jb
+detekt = "1.23.1" # https://github.com/detekt/detekt
+kotlin = "1.9.0" # https://kotlinlang.org/releases.html
+kotlinx-coroutines = "1.7.3" # https://github.com/Kotlin/kotlinx.coroutines
+twitter-compose-rules = "0.0.26" # https://github.com/twitter/compose-rules
+
+[libraries]
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
+
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+
+twitter-compose-rules = { module = "com.twitter.compose.rules:detekt", version.ref = "twitter-compose-rules" }
+
+[plugins]
+compose = { id = "org.jetbrains.compose", version.ref = "compose" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
