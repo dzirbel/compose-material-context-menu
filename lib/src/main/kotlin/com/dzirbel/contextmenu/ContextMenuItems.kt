@@ -31,8 +31,15 @@ open class AugmentedContextMenuItem(
 abstract class CustomContentContextMenuItem(onClick: () -> Unit) : ContextMenuItem(label = "", onClick = onClick) {
     open val clickable: Boolean = true
 
+    /**
+     * The Composable content of this item, wrapped inside a layout with standard styling.
+     *
+     * @param onDismissRequest callback which may be invoked to close the context menu; provided for items which may
+     *  close the menu on conditions in addition to the standard click handling
+     * @param params [ContextMenuParams] provided to the context menu (to be optionally used for padding, etc)
+     */
     @Composable
-    abstract fun Content()
+    abstract fun Content(onDismissRequest: () -> Unit, params: ContextMenuParams)
 }
 
 /**
@@ -46,7 +53,7 @@ abstract class GenericContextMenuItem : ContextMenuItem(
      * The Composable content of this item.
      *
      * @param onDismissRequest callback which may be invoked to close the context menu; provided for items which
-     *  implement their own click handling (to close the menu on click)
+     *  implement their own click handling (e.g. to close the menu on click)
      * @param params [ContextMenuParams] provided to the context menu (to be optionally used for padding, etc)
      * @param modifier [Modifier] which must be applied to the root element (in order for hover states of nested menus
      *  to work properly)

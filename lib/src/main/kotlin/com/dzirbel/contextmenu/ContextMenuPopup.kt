@@ -27,7 +27,7 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import java.awt.event.KeyEvent
 
-@OptIn(ExperimentalComposeUiApi::class)
+@ExperimentalComposeUiApi
 @Composable
 internal fun ContextMenuPopup(
     params: ContextMenuParams,
@@ -79,6 +79,7 @@ internal fun ContextMenuPopup(
                 .shadow(elevation = params.elevation, shape = params.popupShape)
                 .background(color = params.backgroundColor, shape = params.popupShape),
             columnModifier = Modifier.width(IntrinsicSize.Max),
+            includeScrollbarWhenUsed = params.showScrollbarOnOverFlow,
         ) {
             val resolvedItems = remember { items() }
 

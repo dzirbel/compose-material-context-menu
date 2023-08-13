@@ -20,6 +20,7 @@ internal fun VerticalScroll(
     modifier: Modifier = Modifier,
     columnModifier: Modifier = Modifier,
     includeScrollbarWhenUnused: Boolean = false,
+    includeScrollbarWhenUsed: Boolean = true,
     scrollState: ScrollState = rememberScrollState(),
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -28,7 +29,8 @@ internal fun VerticalScroll(
         modifier = modifier,
         measurePolicy = { measurables, constraints ->
             val contentMeasurable = measurables[0]
-            val needScrollbar = includeScrollbarWhenUnused || adapter.contentSize > adapter.viewportSize
+            val needScrollbar = includeScrollbarWhenUsed &&
+                (includeScrollbarWhenUnused || adapter.contentSize > adapter.viewportSize)
 
             if (needScrollbar) {
                 val scrollbarMeasurable = measurables[1]

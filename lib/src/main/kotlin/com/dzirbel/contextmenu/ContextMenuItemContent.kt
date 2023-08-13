@@ -2,7 +2,6 @@ package com.dzirbel.contextmenu
 
 import androidx.compose.foundation.ContextMenuItem
 import androidx.compose.foundation.LocalIndication
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -20,9 +19,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.Layout
 
 @Composable
@@ -88,7 +91,7 @@ private fun CustomContentContextMenuItem(
             .padding(params.padding),
         contentAlignment = Alignment.CenterStart,
     ) {
-        item.Content()
+        item.Content(onDismissRequest = onDismissRequest, params = params)
     }
 }
 
@@ -102,6 +105,7 @@ private fun GenericContextMenuItem(
     item.Content(onDismissRequest = onDismissRequest, params = params, modifier = modifier)
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun ContextMenuGroup(
     item: ContextMenuGroup,
@@ -156,11 +160,22 @@ private fun ContextMenuGroup(
 @Composable
 private fun ContextMenuDivider(params: ContextMenuParams, modifier: Modifier = Modifier) {
     Layout(
-        modifier = modifier.itemWidth(params).background(params.dividerColor),
-        content = {},
+        modifier = modifier
+            .itemWidth(params)
+            .drawWithContent {
+                val width: Float = params.dividerLineHeight.toPx()
+                val y: Float = (size.height - width) / 2
+                drawLine(
+                    color = params.dividerColor,
+                    start = Offset(x = 0f, y = y),
+                    end = Offset(x = size.width, y = y),
+                    strokeWidth = width,
+                )
+            },
         measurePolicy = { _, constraints ->
             layout(width = constraints.maxWidth, height = params.dividerHeight.roundToPx()) {}
         },
+        content = {},
     )
 }
 
@@ -184,10 +199,13 @@ private fun DefaultContextMenuItem(
     )
 }
 
+@Stable
 private fun Modifier.itemWidth(params: ContextMenuParams): Modifier {
     return fillMaxWidth().widthIn(min = params.minWidth, max = params.maxWidth)
 }
 
+@Stable
 private fun Modifier.itemHeight(params: ContextMenuParams) = heightIn(min = params.itemMinHeight)
 
+@Stable
 private fun Modifier.itemSize(params: ContextMenuParams) = itemWidth(params).itemHeight(params)

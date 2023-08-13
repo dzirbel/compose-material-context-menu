@@ -3,35 +3,27 @@ package com.dzirbel.contextmenu
 import androidx.compose.foundation.ContextMenuItem
 import androidx.compose.foundation.ContextMenuRepresentation
 import androidx.compose.foundation.ContextMenuState
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.LocalContextMenuRepresentation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.rememberPopupPositionProviderAtPosition
 
-@Suppress("MagicNumber")
-data class ContextMenuParams(
-    val minWidth: Dp = 112.dp,
-    val maxWidth: Dp = 280.dp,
-    val itemMinHeight: Dp = 48.dp,
-    val padding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-    val iconPadding: Dp = 20.dp,
-    val elevation: Dp = 8.dp,
-    val windowMargin: Dp = itemMinHeight,
-    val popupShape: Shape = RoundedCornerShape(4.dp),
-    val dividerHeight: Dp = 1.dp, // TODO optional additional padding above/below divider
-    // TODO default colors from material theme
-    val dividerColor: Color = Color.Gray,
-    val backgroundColor: Color = Color.White,
-)
-
-// TODO height of dropdowns that take up the entire window is a bit too much
-// TODO clicking a menu group item closes the dropdown
-@OptIn(ExperimentalComposeUiApi::class)
+/**
+ * A [ContextMenuRepresentation] which augments the default [ContextMenuPopup] with additional features.
+ *
+ * In particular, it supports theming via the properties of [ContextMenuParams] and additional item types including
+ * dividers ([ContextMenuDivider]), nested context menu groups ([ContextMenuGroup]), and items augmented with enabled
+ * state, icons, etc. ([AugmentedContextMenuItem]).
+ *
+ * It can be applied by providing it for the [LocalContextMenuRepresentation], i.e.:
+ *
+ *   CompositionLocalProvider(LocalContextMenuRepresentation provides AugmentedContextMenuRepresentation()) { ... }
+ *
+ * TODO default colors from material theme
+ * TODO height of dropdowns that take up the entire window is a bit too much
+ * TODO clicking a menu group item closes the dropdown
+ */
+@ExperimentalComposeUiApi
 class AugmentedContextMenuRepresentation(
     private val params: ContextMenuParams = ContextMenuParams(),
 ) : ContextMenuRepresentation {
