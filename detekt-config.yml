@@ -802,7 +802,7 @@ style:
     active: true
     maxJumpCount: 1
   MagicNumber:
-    active: true
+    active: false
     excludes: ['**/test/**', '**/testFixtures/**']
     ignoreNumbers: ['-1', '0', '1', '2', '100']
     ignoreHashCodeFunction: true

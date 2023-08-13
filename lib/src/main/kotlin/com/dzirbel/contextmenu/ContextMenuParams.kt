@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 /**
  * Wrapper class containing configuration options for [AugmentedContextMenuRepresentation].
  */
-@Suppress("MagicNumber")
 data class ContextMenuParams(
     /**
      * Minimum width of the context menu; by default 112 dp per the Material spec.
