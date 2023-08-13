@@ -27,15 +27,25 @@ data class ContextMenuParams(
     val itemMinHeight: Dp = 48.dp,
 
     /**
-     * Padding applied to each context menu item; by default 16 dp horizontally and 8 dp vertically per the Material
-     * spec.
+     * Padding applied to the top of the menu; by default 8 dp per the Material spec.
      */
-    val padding: PaddingValues = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+    val menuTopPadding: Dp = 8.dp,
 
     /**
-     * Padding between [AugmentedContextMenuItem] icons and text; by default 20 dp per the Material spec.
+     * Padding applied to the top of the menu; by default 8 dp per the Material spec.
      */
-    val iconPadding: Dp = 20.dp,
+    val menuBottomPadding: Dp = 8.dp,
+
+    /**
+     * Padding applied to each context menu item; by default 12 dp horizontally per the Material spec and 8 dp
+     * vertically (not specified by Material but a reasonable default for cases where the item height is large).
+     */
+    val itemPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+
+    /**
+     * Padding between [AugmentedContextMenuItem] icons and text; by default 12 dp per the Material spec.
+     */
+    val iconPadding: Dp = 12.dp,
 
     /**
      * Elevation of the context menu.
@@ -61,9 +71,9 @@ data class ContextMenuParams(
     val dividerLineHeight: Dp = 1.dp,
 
     /**
-     * Height occupied by the [ContextMenuDivider]; by default 8 dp per the Material spec.
+     * Height occupied by the [ContextMenuDivider]; by default 16 dp per the Material spec.
      */
-    val dividerHeight: Dp = 8.dp,
+    val dividerHeight: Dp = 16.dp,
 
     /**
      * Whether a scrollbar should be shown when the height of the context menu exceeds the height of the window.

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -78,7 +79,9 @@ internal fun ContextMenuPopup(
             modifier = Modifier
                 .shadow(elevation = params.elevation, shape = params.popupShape)
                 .background(color = params.backgroundColor, shape = params.popupShape),
-            columnModifier = Modifier.width(IntrinsicSize.Max),
+            columnModifier = Modifier
+                .width(IntrinsicSize.Max)
+                .padding(top = params.menuTopPadding, bottom = params.menuBottomPadding),
             includeScrollbarWhenUsed = params.showScrollbarOnOverFlow,
         ) {
             val resolvedItems = remember { items() }

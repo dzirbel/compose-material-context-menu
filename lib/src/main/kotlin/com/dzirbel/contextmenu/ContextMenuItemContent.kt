@@ -63,7 +63,7 @@ private fun AugmentedContextMenuItem(
                     onDismissRequest()
                     item.onClick()
                 }
-                .padding(params.padding),
+                .padding(params.itemPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(params.iconPadding),
         ) {
@@ -88,7 +88,7 @@ private fun CustomContentContextMenuItem(
                 onDismissRequest()
                 item.onClick()
             }
-            .padding(params.padding),
+            .padding(params.itemPadding),
         contentAlignment = Alignment.CenterStart,
     ) {
         item.Content(onDismissRequest = onDismissRequest, params = params)
@@ -136,7 +136,7 @@ private fun ContextMenuGroup(
     ) {
         Row(
             // apply padding to the inner row so that the position of the nested menu is correct
-            modifier = Modifier.fillMaxWidth().padding(params.padding),
+            modifier = Modifier.fillMaxWidth().padding(params.itemPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -193,7 +193,7 @@ private fun DefaultContextMenuItem(
                 onDismissRequest()
                 item.onClick()
             }
-            .padding(params.padding)
+            .padding(params.itemPadding)
             .wrapContentHeight(), // center the text vertically
         text = item.label,
     )

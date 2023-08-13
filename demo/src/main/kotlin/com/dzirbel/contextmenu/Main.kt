@@ -141,6 +141,7 @@ private fun DemoItem.contextMenu(incrementCounter: () -> Unit, decrementCounter:
         },
         ContextMenuDivider,
         AugmentedContextMenuItem("Disabled item", onClick = {}, enabled = false),
+        AugmentedContextMenuItem("Last item", onClick = {}),
     )
 }
 
