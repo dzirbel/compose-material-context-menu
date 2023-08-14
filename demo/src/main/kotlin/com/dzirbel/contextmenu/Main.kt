@@ -2,6 +2,7 @@ package com.dzirbel.contextmenu
 
 import androidx.compose.foundation.ContextMenuArea
 import androidx.compose.foundation.ContextMenuItem
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalContextMenuRepresentation
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.clickable
@@ -14,10 +15,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
+import androidx.compose.foundation.text.LocalTextContextMenu
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -47,7 +50,7 @@ import androidx.compose.ui.window.application
 
 private const val TITLE = "Material Context Menu Demo"
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 fun main() {
     application {
         Window(
@@ -60,6 +63,7 @@ fun main() {
                 MaterialTheme(colors = colors) {
                     CompositionLocalProvider(
                         LocalContextMenuRepresentation provides MaterialContextMenuRepresentation(),
+                        LocalTextContextMenu provides MaterialTextContentMenu,
                     ) {
                         Surface {
                             Content(
@@ -78,10 +82,9 @@ private data class DemoItem(val name: String)
 
 @Composable
 private fun Content(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) {
-    // TODO text field
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -94,6 +97,13 @@ private fun Content(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) {
                 )
             }
         }
+
+        var text: String by remember { mutableStateOf("Text field demo") }
+        OutlinedTextField(
+            value = text,
+            onValueChange = { text = it },
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        )
 
         val items = remember {
             List(20) { DemoItem(name = "Item ${it + 1}") }

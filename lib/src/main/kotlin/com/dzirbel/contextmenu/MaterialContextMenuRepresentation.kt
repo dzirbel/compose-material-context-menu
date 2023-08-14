@@ -45,12 +45,14 @@ fun MaterialContextMenuRepresentation(
  *
  *   CompositionLocalProvider(LocalContextMenuRepresentation provides MaterialContextMenuRepresentation()) { ... }
  *
+ * It's also recommended to override the default text context menu items with material ones via
+ * [MaterialTextContentMenu].
+ *
  * Note that it should be applied _after_ [MaterialTheme] so that the appropriate material colors are used. It can also
  * be used without [MaterialTheme], in which case customizing the [ContextMenuColors] is recommended.
  *
  * TODO height of dropdowns that take up the entire window is a bit too much
  * TODO clicking a menu group item closes the dropdown
- * TODO provide material context items for text fields
  */
 @ExperimentalComposeUiApi
 class MaterialContextMenuRepresentation(private val params: ContextMenuParams) : ContextMenuRepresentation {
