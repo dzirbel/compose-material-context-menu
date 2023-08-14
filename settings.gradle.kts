@@ -1,4 +1,4 @@
-rootProject.name = "compose-augmented-context-menu"
+rootProject.name = "compose-material-context-menu"
 
 include("demo", "lib")
 
