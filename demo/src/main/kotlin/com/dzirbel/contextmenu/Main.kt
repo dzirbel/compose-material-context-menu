@@ -29,7 +29,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
@@ -128,14 +127,14 @@ private fun Content(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) {
 @Composable
 private fun Item(demoItem: DemoItem) {
     var counter by remember { mutableStateOf(0) }
-    ContextMenuArea(
-        items = {
-            contextMenu(
-                incrementCounter = { counter++ },
-                decrementCounter = { counter-- },
-            )
-        },
-    ) {
+    val items = {
+        contextMenu(
+            incrementCounter = { counter++ },
+            decrementCounter = { counter-- },
+        )
+    }
+
+    ContextMenuArea(items = items) {
         Row(
             modifier = Modifier
                 .clickable {}
@@ -144,14 +143,20 @@ private fun Item(demoItem: DemoItem) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(demoItem.name)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                ContextMenuOverflowButton(items = items)
 
-            TextButton(onClick = { counter++ }) {
-                Text("Counter: $counter")
+                Text(demoItem.name)
+
+                TextButton(onClick = { counter++ }) {
+                    Text("Counter: $counter")
+                }
             }
 
-            // TODO support context menu from overflow button click
-            Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
+            ContextMenuOverflowButton(items = items)
         }
     }
 }

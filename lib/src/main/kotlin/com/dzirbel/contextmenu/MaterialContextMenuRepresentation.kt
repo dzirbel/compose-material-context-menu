@@ -6,6 +6,7 @@ import androidx.compose.foundation.ContextMenuState
 import androidx.compose.foundation.LocalContextMenuRepresentation
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.rememberPopupPositionProviderAtPosition
 
@@ -60,15 +61,29 @@ class MaterialContextMenuRepresentation(private val params: ContextMenuParams) :
     override fun Representation(state: ContextMenuState, items: () -> List<ContextMenuItem>) {
         val status = state.status
         if (status is ContextMenuState.Status.Open) {
-            ContextMenuPopup(
-                params = params,
-                popupPositionProvider = rememberPopupPositionProviderAtPosition(
-                    positionPx = status.rect.topLeft, // rect is 0x0 at the mouse position
+            val buttonAnchor = LocalContextMenuButtonAnchor.current
+            val popupPositionProvider = if (buttonAnchor) {
+                // if the context menu is being opened from a button, use the nested provider which positions relative
+                // to the anchor rather than the cursor
+                rememberNestedDropdownPositionProvider(
                     windowMargin = params.measurements.windowMargin,
-                ),
-                onDismissRequest = { state.status = ContextMenuState.Status.Closed },
-                items = items,
-            )
+                )
+            } else {
+                rememberPopupPositionProviderAtPosition(
+                    positionPx = status.rect.topLeft, // rect is 0x0 at the mouse position relative to the anchor bounds
+                    windowMargin = params.measurements.windowMargin,
+                )
+            }
+
+            // ensure button anchor is not used in nested dropdowns
+            CompositionLocalProvider(LocalContextMenuButtonAnchor provides false) {
+                ContextMenuPopup(
+                    params = params,
+                    popupPositionProvider = popupPositionProvider,
+                    onDismissRequest = { state.status = ContextMenuState.Status.Closed },
+                    items = items,
+                )
+            }
         }
     }
 }
