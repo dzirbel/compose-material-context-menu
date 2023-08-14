@@ -1,25 +1,63 @@
 package com.dzirbel.contextmenu
 
 import androidx.compose.foundation.ContextMenuItem
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 /**
- * A [ContextMenuItem] which may also optionally provide start and/or end icons and an [enabled] state.
+ * A [ContextMenuItem] with additional properties for Material styling.
+ *
+ * @param label the text label of this item
+ * @param onClick callback invoked when this item is clicked
+ * @param enabled whether the item is enabled (clickable and not faded)
+ * @param leadingIcon the [ContextMenuIcon] displayed at the start of the item
+ * @param trailingIcon the [ContextMenuIcon] displayed at the end of the item
  */
-open class AugmentedContextMenuItem(
+@Suppress("OutdatedDocumentation")
+open class MaterialContextMenuItem(
     label: String,
     onClick: () -> Unit,
     val enabled: Boolean = true,
-) : ContextMenuItem(label = label, onClick = onClick) {
+    val leadingIcon: ContextMenuIcon? = null,
+    val trailingIcon: ContextMenuIcon? = null,
+) : CustomContentContextMenuItem(label = label, onClick = onClick) {
+    override val clickable: Boolean
+        get() = enabled
+
+    /**
+     * Displays the [label] of this item as a [Text] Composable; may be overridden for custom text styling.
+     */
     @Composable
-    open fun StartIcon() {}
+    open fun Text(modifier: Modifier = Modifier) {
+        Text(label, modifier = modifier)
+    }
 
     @Composable
-    open fun EndIcon() {}
+    override fun Content(onDismissRequest: () -> Unit, params: ContextMenuParams) {
+        val contentAlpha = if (enabled) LocalContentAlpha.current else ContentAlpha.disabled
+        CompositionLocalProvider(LocalContentAlpha provides contentAlpha) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(params.measurements.iconPadding),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                leadingIcon?.IconContent(params)
+
+                Text(Modifier.weight(1f))
+
+                trailingIcon?.IconContent(params)
+            }
+        }
+    }
 }
 
 /**
@@ -28,7 +66,9 @@ open class AugmentedContextMenuItem(
  * Standard styling is applied to the item, including padding, sizing, and clickable behavior (enabled if [clickable] is
  * true). For complete control over the item, use [GenericContextMenuItem].
  */
-abstract class CustomContentContextMenuItem(onClick: () -> Unit) : ContextMenuItem(label = "", onClick = onClick) {
+abstract class CustomContentContextMenuItem(onClick: () -> Unit, label: String = "") :
+    ContextMenuItem(label = label, onClick = onClick) {
+
     open val clickable: Boolean = true
 
     /**
@@ -74,6 +114,7 @@ open class ContextMenuGroup(
      */
     @Composable
     open fun EndIcon() {
+        // TODO use plain arrow right icon
         Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Expand")
     }
 }

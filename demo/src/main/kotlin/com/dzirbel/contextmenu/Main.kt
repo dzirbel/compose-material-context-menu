@@ -5,6 +5,7 @@ import androidx.compose.foundation.ContextMenuItem
 import androidx.compose.foundation.LocalContextMenuRepresentation
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,16 +16,21 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.darkColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -34,22 +40,33 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+
+private const val TITLE = "Material Context Menu Demo"
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     application {
         Window(
-            title = "Context Menu Demo",
+            title = TITLE,
             onCloseRequest = ::exitApplication,
             content = {
-                MaterialTheme {
+                val systemTheme = !isSystemInDarkTheme()
+                val lightTheme = remember { mutableStateOf(systemTheme) }
+                val colors = if (lightTheme.value) lightColors() else darkColors()
+                MaterialTheme(colors = colors) {
                     CompositionLocalProvider(
-                        LocalContextMenuRepresentation provides AugmentedContextMenuRepresentation(),
+                        LocalContextMenuRepresentation provides MaterialContextMenuRepresentation(),
                     ) {
-                        Content()
+                        Surface {
+                            Content(
+                                lightTheme = lightTheme.value,
+                                setLightTheme = { lightTheme.value = it },
+                            )
+                        }
                     }
                 }
             },
@@ -60,23 +77,41 @@ fun main() {
 private data class DemoItem(val name: String)
 
 @Composable
-private fun Content() {
-    val items = remember {
-        List(20) { DemoItem(name = "Item ${it + 1}") }
-    }
+private fun Content(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) {
+    // TODO text field
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, start = 16.dp, end = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(TITLE, style = MaterialTheme.typography.h5)
 
-    val scrollState = rememberScrollState()
-    Box {
-        Column(Modifier.verticalScroll(scrollState).padding(16.dp)) {
-            for (item in items) {
-                Item(item)
+            IconButton(onClick = { setLightTheme(!lightTheme) }) {
+                Icon(
+                    painter = painterResource(if (lightTheme) "light_mode.svg" else "dark_mode.svg"),
+                    contentDescription = "Toggle theme",
+                )
             }
         }
 
-        VerticalScrollbar(
-            modifier = Modifier.align(Alignment.CenterEnd),
-            adapter = rememberScrollbarAdapter(scrollState),
-        )
+        val items = remember {
+            List(20) { DemoItem(name = "Item ${it + 1}") }
+        }
+
+        val scrollState = rememberScrollState()
+        Box {
+            Column(Modifier.verticalScroll(scrollState).padding(16.dp)) {
+                for (item in items) {
+                    Item(item)
+                }
+            }
+
+            VerticalScrollbar(
+                modifier = Modifier.align(Alignment.CenterEnd),
+                adapter = rememberScrollbarAdapter(scrollState),
+            )
+        }
     }
 }
 
@@ -85,7 +120,7 @@ private fun Item(demoItem: DemoItem) {
     var counter by remember { mutableStateOf(0) }
     ContextMenuArea(
         items = {
-            demoItem.contextMenu(
+            contextMenu(
                 incrementCounter = { counter++ },
                 decrementCounter = { counter-- },
             )
@@ -105,12 +140,13 @@ private fun Item(demoItem: DemoItem) {
                 Text("Counter: $counter")
             }
 
+            // TODO support context menu from overflow button click
             Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
         }
     }
 }
 
-private fun DemoItem.contextMenu(incrementCounter: () -> Unit, decrementCounter: () -> Unit): List<ContextMenuItem> {
+private fun contextMenu(incrementCounter: () -> Unit, decrementCounter: () -> Unit): List<ContextMenuItem> {
     return listOf(
         ContextMenuItem("Increment counter", onClick = incrementCounter),
         ContextMenuItem("Decrement counter", onClick = decrementCounter),
@@ -124,24 +160,43 @@ private fun DemoItem.contextMenu(incrementCounter: () -> Unit, decrementCounter:
             icons.map { outerIcon ->
                 ContextMenuGroup("Inner group") {
                     icons.mapIndexed { index, innerIcon ->
-                        object : AugmentedContextMenuItem("Double-nested item ${index + 1}", onClick = {}) {
-                            @Composable
-                            override fun StartIcon() {
-                                Icon(imageVector = outerIcon, contentDescription = null)
-                            }
-
-                            @Composable
-                            override fun EndIcon() {
-                                Icon(imageVector = innerIcon, contentDescription = null)
-                            }
-                        }
+                        MaterialContextMenuItem(
+                            label = "Double-nested item ${index + 1}",
+                            onClick = {},
+                            leadingIcon = ContextMenuIcon.OfVector(outerIcon),
+                            trailingIcon = ContextMenuIcon.OfVector(innerIcon),
+                        )
                     }
                 }
             }
         },
         ContextMenuDivider,
-        AugmentedContextMenuItem("Disabled item", onClick = {}, enabled = false),
-        AugmentedContextMenuItem("Last item", onClick = {}),
+        MaterialContextMenuItem("Disabled item", onClick = {}, enabled = false),
+        MaterialContextMenuItem(
+            label = "Custom icon",
+            onClick = {},
+            leadingIcon = { Icon(Icons.Default.Star, contentDescription = null, tint = MaterialTheme.colors.primary) },
+        ),
+        ContextMenuDivider,
+        MaterialContextMenuItem(
+            label = "Copy",
+            onClick = {},
+            leadingIcon = ContextMenuIcon.OfPainterResource("content_copy.svg"),
+            trailingIcon = ContextMenuIcon.OfShortcuts(ContextMenuShortcut(key = "C")),
+        ),
+        MaterialContextMenuItem(
+            label = "Cut",
+            onClick = {},
+            leadingIcon = ContextMenuIcon.OfPainterResource("content_cut.svg"),
+            trailingIcon = ContextMenuIcon.OfShortcuts(ContextMenuShortcut(key = "X")),
+        ),
+        MaterialContextMenuItem(
+            label = "Paste",
+            onClick = {},
+            leadingIcon = ContextMenuIcon.OfPainterResource("content_paste.svg"),
+            trailingIcon = ContextMenuIcon.OfShortcuts(ContextMenuShortcut(key = "V")),
+        ),
+        MaterialContextMenuItem(label = "Aligned action", onClick = {}, leadingIcon = ContextMenuIcon.Empty),
     )
 }
 

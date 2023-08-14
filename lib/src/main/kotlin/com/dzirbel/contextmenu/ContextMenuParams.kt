@@ -2,15 +2,29 @@ package com.dzirbel.contextmenu
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Colors
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 /**
- * Wrapper class containing configuration options for [AugmentedContextMenuRepresentation].
+ * Wrapper class containing configuration options for [MaterialContextMenuRepresentation].
  */
 data class ContextMenuParams(
+    val measurements: ContextMenuMeasurements,
+
+    val colors: ContextMenuColors,
+
+    /**
+     * Whether a scrollbar should be shown when the height of the context menu exceeds the height of the window.
+     *
+     * If false, the overflowing content menu will still be scrollable, but no scrollbar will be visible.
+     */
+    val showScrollbarOnOverFlow: Boolean = true,
+)
+
+data class ContextMenuMeasurements(
     /**
      * Minimum width of the context menu; by default 112 dp per the Material spec.
      */
@@ -43,7 +57,12 @@ data class ContextMenuParams(
     val itemPadding: PaddingValues = PaddingValues(horizontal = 12.dp, vertical = 8.dp),
 
     /**
-     * Padding between [AugmentedContextMenuItem] icons and text; by default 12 dp per the Material spec.
+     * Size of item icons; by default 24 dp per the Material spec.
+     */
+    val iconSize: Dp = 24.dp,
+
+    /**
+     * Padding between [MaterialContextMenuItem] icons and text; by default 12 dp per the Material spec.
      */
     val iconPadding: Dp = 12.dp,
 
@@ -74,21 +93,34 @@ data class ContextMenuParams(
      * Height occupied by the [ContextMenuDivider]; by default 16 dp per the Material spec.
      */
     val dividerHeight: Dp = 16.dp,
-
-    /**
-     * Whether a scrollbar should be shown when the height of the context menu exceeds the height of the window.
-     *
-     * If false, the overflowing content menu will still be scrollable, but no scrollbar will be visible.
-     */
-    val showScrollbarOnOverFlow: Boolean = true,
-
-    /**
-     * [Color] of the [ContextMenuDivider] lines.
-     */
-    val dividerColor: Color = Color.Gray,
-
-    /**
-     * Background [Color] of the context menu.
-     */
-    val backgroundColor: Color = Color.White,
 )
+
+data class ContextMenuColors(
+    /**
+     * [Color] of the menu surface background.
+     */
+    val surface: Color,
+
+    /**
+     * [Color] of menu item text.
+     */
+    val text: Color,
+
+    /**
+     * [Color] of menu icons.
+     */
+    val icon: Color,
+
+    /**
+     * [Color] of menu dividers.
+     */
+    val divider: Color,
+) {
+    constructor(materialColors: Colors) : this(
+        surface = materialColors.surface,
+        text = materialColors.onSurface,
+        icon = materialColors.onSurface,
+        // divider color is not strongly specified by Material 2, but 12% opacity appears to be the default
+        divider = materialColors.onSurface.copy(alpha = 0.12f),
+    )
+}

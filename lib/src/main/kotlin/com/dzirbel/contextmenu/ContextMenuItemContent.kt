@@ -13,11 +13,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
@@ -38,39 +35,11 @@ internal fun ContextMenuItemContent(
 ) {
     @Suppress("NamedArguments")
     when (item) {
-        is AugmentedContextMenuItem -> AugmentedContextMenuItem(item, params, onDismissRequest, modifier)
         is CustomContentContextMenuItem -> CustomContentContextMenuItem(item, params, onDismissRequest, modifier)
         is GenericContextMenuItem -> GenericContextMenuItem(item, params, onDismissRequest, modifier)
         is ContextMenuGroup -> ContextMenuGroup(item, params, onDismissRequest, menuOpen, modifier)
         is ContextMenuDivider -> ContextMenuDivider(params, modifier)
         else -> DefaultContextMenuItem(item, params, onDismissRequest, modifier)
-    }
-}
-
-@Composable
-private fun AugmentedContextMenuItem(
-    item: AugmentedContextMenuItem,
-    params: ContextMenuParams,
-    onDismissRequest: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val contentAlpha = if (item.enabled) LocalContentAlpha.current else ContentAlpha.disabled
-    CompositionLocalProvider(LocalContentAlpha provides contentAlpha) {
-        Row(
-            modifier = modifier
-                .itemSize(params)
-                .clickable(enabled = item.enabled) {
-                    onDismissRequest()
-                    item.onClick()
-                }
-                .padding(params.itemPadding),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(params.iconPadding),
-        ) {
-            item.StartIcon()
-            Text(item.label, modifier = Modifier.weight(1f))
-            item.EndIcon()
-        }
     }
 }
 
@@ -88,7 +57,7 @@ private fun CustomContentContextMenuItem(
                 onDismissRequest()
                 item.onClick()
             }
-            .padding(params.itemPadding),
+            .padding(params.measurements.itemPadding),
         contentAlignment = Alignment.CenterStart,
     ) {
         item.Content(onDismissRequest = onDismissRequest, params = params)
@@ -136,7 +105,7 @@ private fun ContextMenuGroup(
     ) {
         Row(
             // apply padding to the inner row so that the position of the nested menu is correct
-            modifier = Modifier.fillMaxWidth().padding(params.itemPadding),
+            modifier = Modifier.fillMaxWidth().padding(params.measurements.itemPadding),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -148,7 +117,7 @@ private fun ContextMenuGroup(
             ContextMenuPopup(
                 params = params,
                 popupPositionProvider = rememberNestedDropdownPositionProvider(
-                    windowMargin = params.windowMargin,
+                    windowMargin = params.measurements.windowMargin,
                 ),
                 onDismissRequest = onDismissRequest,
                 items = item.items,
@@ -163,17 +132,17 @@ private fun ContextMenuDivider(params: ContextMenuParams, modifier: Modifier = M
         modifier = modifier
             .itemWidth(params)
             .drawWithContent {
-                val width: Float = params.dividerLineHeight.toPx()
+                val width: Float = params.measurements.dividerLineHeight.toPx()
                 val y: Float = (size.height - width) / 2
                 drawLine(
-                    color = params.dividerColor,
+                    color = params.colors.divider,
                     start = Offset(x = 0f, y = y),
                     end = Offset(x = size.width, y = y),
                     strokeWidth = width,
                 )
             },
         measurePolicy = { _, constraints ->
-            layout(width = constraints.maxWidth, height = params.dividerHeight.roundToPx()) {}
+            layout(width = constraints.maxWidth, height = params.measurements.dividerHeight.roundToPx()) {}
         },
         content = {},
     )
@@ -193,7 +162,7 @@ private fun DefaultContextMenuItem(
                 onDismissRequest()
                 item.onClick()
             }
-            .padding(params.itemPadding)
+            .padding(params.measurements.itemPadding)
             .wrapContentHeight(), // center the text vertically
         text = item.label,
     )
@@ -201,11 +170,11 @@ private fun DefaultContextMenuItem(
 
 @Stable
 private fun Modifier.itemWidth(params: ContextMenuParams): Modifier {
-    return fillMaxWidth().widthIn(min = params.minWidth, max = params.maxWidth)
+    return fillMaxWidth().widthIn(min = params.measurements.minWidth, max = params.measurements.maxWidth)
 }
 
 @Stable
-private fun Modifier.itemHeight(params: ContextMenuParams) = heightIn(min = params.itemMinHeight)
+private fun Modifier.itemHeight(params: ContextMenuParams) = heightIn(min = params.measurements.itemMinHeight)
 
 @Stable
 private fun Modifier.itemSize(params: ContextMenuParams) = itemWidth(params).itemHeight(params)

@@ -2,27 +2,22 @@ package com.dzirbel.contextmenu
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.VerticalScrollbar
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.rememberScrollbarAdapter
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 
 /**
- * Adds a simple vertical scrollbar to [content], which is placed in a [Box] with a [VerticalScrollbar] to the right.
+ * Adds a vertical scrollbar to [content] either when necessary, always if [includeScrollbarWhenUnused] is true, or
+ * never if [includeScrollbarWhenUsed] is false.
  */
 @Composable
-internal fun VerticalScroll(
+internal fun OptionalVerticalScroll(
+    scrollState: ScrollState,
     modifier: Modifier = Modifier,
-    columnModifier: Modifier = Modifier,
     includeScrollbarWhenUnused: Boolean = false,
     includeScrollbarWhenUsed: Boolean = true,
-    scrollState: ScrollState = rememberScrollState(),
-    content: @Composable ColumnScope.() -> Unit,
+    content: @Composable () -> Unit,
 ) {
     val adapter = rememberScrollbarAdapter(scrollState)
     Layout(
@@ -52,7 +47,7 @@ internal fun VerticalScroll(
             }
         },
         content = {
-            Column(columnModifier.verticalScroll(scrollState), content = content)
+            content()
             VerticalScrollbar(adapter = adapter)
         },
     )

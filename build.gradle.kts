@@ -3,9 +3,14 @@ plugins {
     kotlin("jvm") version libs.versions.kotlin
 }
 
-subprojects {
+allprojects {
     repositories {
         mavenCentral()
+    }
+}
+
+subprojects {
+    repositories {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     }
 
