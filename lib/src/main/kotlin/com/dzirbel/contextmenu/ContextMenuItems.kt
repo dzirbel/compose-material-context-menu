@@ -7,12 +7,11 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 
 /**
  * A [ContextMenuItem] with additional properties for Material styling.
@@ -113,9 +112,8 @@ open class ContextMenuGroup(
      * The icon displayed at the end of the item; by default an arrow pointing to the right.
      */
     @Composable
-    open fun EndIcon() {
-        // TODO use plain arrow right icon
-        Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Expand")
+    open fun EndIcon(params: ContextMenuParams) {
+        Icon(painter = painterResource("arrow_right.svg"), contentDescription = "Expand", tint = params.colors.icon)
     }
 }
 

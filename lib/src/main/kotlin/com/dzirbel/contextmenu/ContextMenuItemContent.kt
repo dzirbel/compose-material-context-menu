@@ -110,7 +110,7 @@ private fun ContextMenuGroup(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(item.label)
-            item.EndIcon()
+            item.EndIcon(params)
         }
 
         if (menuOpen) {
