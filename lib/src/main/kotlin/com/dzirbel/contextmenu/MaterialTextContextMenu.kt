@@ -14,10 +14,10 @@ import androidx.compose.ui.platform.LocalLocalization
  *
  * It can be applied by providing it for the [LocalTextContextMenu], i.e.:
  *
- *   CompositionLocalProvider(LocalTextContextMenu provides MaterialTextContentMenu) { ... }
+ *   CompositionLocalProvider(LocalTextContextMenu provides MaterialTextContextMenu) { ... }
  */
 @ExperimentalFoundationApi
-object MaterialTextContentMenu : TextContextMenu {
+object MaterialTextContextMenu : TextContextMenu {
     @Composable
     override fun Area(
         textManager: TextContextMenu.TextManager,

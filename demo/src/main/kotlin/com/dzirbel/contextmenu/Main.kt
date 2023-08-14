@@ -62,7 +62,7 @@ fun main() {
                 MaterialTheme(colors = colors) {
                     CompositionLocalProvider(
                         LocalContextMenuRepresentation provides MaterialContextMenuRepresentation(),
-                        LocalTextContextMenu provides MaterialTextContentMenu,
+                        LocalTextContextMenu provides MaterialTextContextMenu,
                     ) {
                         Surface {
                             Content(

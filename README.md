@@ -44,7 +44,7 @@ MaterialTheme(colors = colors) {
     CompositionLocalProvider(
         LocalContextMenuRepresentation provides MaterialContextMenuRepresentation(),
         // optional: use Material text field context menu items, with icons and keyboard shortcuts
-        LocalTextContextMenu provides MaterialTextContentMenu,
+        LocalTextContextMenu provides MaterialTextContextMenu,
     ) {
         // application content
     }

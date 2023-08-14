@@ -47,7 +47,7 @@ fun MaterialContextMenuRepresentation(
  *   CompositionLocalProvider(LocalContextMenuRepresentation provides MaterialContextMenuRepresentation()) { ... }
  *
  * It's also recommended to override the default text context menu items with material ones via
- * [MaterialTextContentMenu].
+ * [MaterialTextContextMenu].
  *
  * Note that it should be applied _after_ [MaterialTheme] so that the appropriate material colors are used. It can also
  * be used without [MaterialTheme], in which case customizing the [ContextMenuColors] is recommended.
