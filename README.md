@@ -1,6 +1,7 @@
 # Compose Material Context Menus
 
 [![Build status](https://github.com/dzirbel/compose-material-context-menu/workflows/Build/badge.svg)](https://github.com/dzirbel/compose-material-context-menu/actions/workflows/build.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.dzirbel/compose-material-context-menu)](https://search.maven.org/artifact/io.github.dzirbel/compose-material-context-menu)
 
 Implementation of context (right-click) menus for [Compose Mutliplatform](https://github.com/JetBrains/compose-multiplatform).
 
@@ -30,7 +31,11 @@ recommend using them until this issue is fixed
 
 ### Usage
 
-TODO add Gradle/maven dependency info
+Add the dependency to your project (ensuring that the `mavenCentral()` repository is included):
+
+```kotlin
+implementation("io.github.dzirbel:compose-material-context-menu:0.1.0")
+```
 
 See the [:demo](/demo/src/main/kotlin/com/dzirbel/contextmenu) project in this repository for usage examples.
 
