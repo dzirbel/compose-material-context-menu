@@ -142,7 +142,7 @@ private fun ContextMenuDivider(params: ContextMenuParams, modifier: Modifier = M
                 )
             },
         measurePolicy = { _, constraints ->
-            layout(width = constraints.maxWidth, height = params.measurements.dividerHeight.roundToPx()) {}
+            layout(width = constraints.minWidth, height = params.measurements.dividerHeight.roundToPx()) {}
         },
         content = {},
     )
