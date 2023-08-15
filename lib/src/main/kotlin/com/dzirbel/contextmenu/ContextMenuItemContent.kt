@@ -109,7 +109,7 @@ private fun ContextMenuGroup(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(item.label)
+            Text(item.label, color = params.colors.text)
             item.EndIcon(params)
         }
 
@@ -165,6 +165,7 @@ private fun DefaultContextMenuItem(
             .padding(params.measurements.itemPadding)
             .wrapContentHeight(), // center the text vertically
         text = item.label,
+        color = params.colors.text,
     )
 }
 

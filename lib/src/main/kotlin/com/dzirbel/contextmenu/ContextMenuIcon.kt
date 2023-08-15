@@ -108,7 +108,7 @@ fun interface ContextMenuIcon {
 
         @Composable
         override fun IconContent(params: ContextMenuParams) {
-            Text(shortcuts.joinToString(separator = " "))
+            Text(shortcuts.joinToString(separator = " "), color = params.colors.text)
         }
     }
 }

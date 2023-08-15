@@ -37,8 +37,8 @@ open class MaterialContextMenuItem(
      * Displays the [label] of this item as a [Text] Composable; may be overridden for custom text styling.
      */
     @Composable
-    open fun Text(modifier: Modifier = Modifier) {
-        Text(label, modifier = modifier)
+    open fun Text(params: ContextMenuParams, modifier: Modifier = Modifier) {
+        Text(label, color = params.colors.text.copy(alpha = LocalContentAlpha.current), modifier = modifier)
     }
 
     @Composable
@@ -51,7 +51,7 @@ open class MaterialContextMenuItem(
             ) {
                 leadingIcon?.IconContent(params)
 
-                Text(Modifier.weight(1f))
+                Text(params, Modifier.weight(1f))
 
                 trailingIcon?.IconContent(params)
             }
