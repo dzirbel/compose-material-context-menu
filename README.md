@@ -38,7 +38,7 @@ with `./gradlew :demo:run`.
 Add the dependency to your project (ensuring that the `mavenCentral()` repository is included):
 
 ```kotlin
-implementation("io.github.dzirbel:compose-material-context-menu:0.1.0")
+implementation("io.github.dzirbel:compose-material-context-menu:0.1.1")
 ```
 
 See the [:demo](/demo/src/main/kotlin/com/dzirbel/contextmenu) project in this repository for usage examples.
