@@ -3,8 +3,10 @@ package com.dzirbel.contextmenu
 import androidx.compose.foundation.ContextMenuItem
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.hoverable
 import androidx.compose.foundation.interaction.HoverInteraction
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -85,10 +87,13 @@ private fun ContextMenuGroup(
 ) {
     // hacky, but works: re-uses the same enter interaction every time
     val enterInteraction = remember { HoverInteraction.Enter() }
-    val interactionSource = remember { MutableInteractionSource() }
+    val clickableInteractionSource = remember { MutableInteractionSource() }
     LaunchedEffect(menuOpen) {
-        interactionSource.emit(if (menuOpen) enterInteraction else HoverInteraction.Exit(enterInteraction))
+        clickableInteractionSource.emit(if (menuOpen) enterInteraction else HoverInteraction.Exit(enterInteraction))
     }
+
+    val hoverInteractionSource = remember { MutableInteractionSource() }
+    val hovering = hoverInteractionSource.collectIsHoveredAsState()
 
     Box(
         modifier = modifier
@@ -97,10 +102,11 @@ private fun ContextMenuGroup(
             // action; provide a custom interaction source which also adds a hover interaction when the menu is open
             .clickable(
                 enabled = false,
-                interactionSource = interactionSource,
+                interactionSource = clickableInteractionSource,
                 indication = LocalIndication.current,
                 onClick = {},
-            ),
+            )
+            .hoverable(hoverInteractionSource),
         contentAlignment = Alignment.CenterStart,
     ) {
         Row(
@@ -119,7 +125,10 @@ private fun ContextMenuGroup(
                 popupPositionProvider = rememberNestedDropdownPositionProvider(
                     windowMargin = params.measurements.windowMargin,
                 ),
-                onDismissRequest = onDismissRequest,
+                onDismissRequest = {
+                    // prevent clicks on this item from closing the nested menu (and cascading to close all menus)
+                    if (!hovering.value) onDismissRequest()
+                },
                 items = item.items,
             )
         }

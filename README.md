@@ -21,7 +21,7 @@ adds:
   2/3 [menus](https://m3.material.io/components/menus/specs)
 - Material menu items with icons, enabled/disabled states, and keyboard shortcuts
 - Dividers
-- Nested sub-menus (see [known issues](#known-issues))
+- Nested sub-menus
 - Custom `@Composable` item content
 - Scroll bars when menu is larger than the window
 - Context menus in overflow (triple-dot) buttons
@@ -31,8 +31,6 @@ with `./gradlew :demo:run`.
 
 ### Known issues
 
-- **Important**: Menus are immediately closed if a menu group item is clicked. I don't recommend 
-  using groups until this issue is fixed.
 - Dropdown height extends slightly beyond the window size if the menu is larger than the window.
 
 ### Usage

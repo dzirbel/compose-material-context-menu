@@ -53,7 +53,6 @@ fun MaterialContextMenuRepresentation(
  * be used without [MaterialTheme], in which case customizing the [ContextMenuColors] is recommended.
  *
  * TODO height of dropdowns that take up the entire window is a bit too much
- * TODO clicking a menu group item closes the dropdown
  */
 @ExperimentalComposeUiApi
 class MaterialContextMenuRepresentation(private val params: ContextMenuParams) : ContextMenuRepresentation {
