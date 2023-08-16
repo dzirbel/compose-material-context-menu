@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.window.rememberComponentRectPositionProvider
 
 @Composable
 internal fun ContextMenuItemContent(
@@ -122,8 +123,9 @@ private fun ContextMenuGroup(
         if (menuOpen) {
             ContextMenuPopup(
                 params = params,
-                popupPositionProvider = rememberNestedDropdownPositionProvider(
-                    windowMargin = params.measurements.windowMargin,
+                popupPositionProvider = rememberComponentRectPositionProvider(
+                    anchor = Alignment.TopEnd,
+                    alignment = Alignment.BottomEnd,
                 ),
                 onDismissRequest = {
                     // prevent clicks on this item from closing the nested menu (and cascading to close all menus)
