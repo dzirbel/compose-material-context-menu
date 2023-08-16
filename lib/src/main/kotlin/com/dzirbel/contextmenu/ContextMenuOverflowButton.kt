@@ -1,5 +1,6 @@
 package com.dzirbel.contextmenu
 
+import androidx.compose.foundation.ContextMenuArea
 import androidx.compose.foundation.ContextMenuItem
 import androidx.compose.foundation.ContextMenuState
 import androidx.compose.foundation.LocalContextMenuRepresentation
@@ -16,25 +17,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 
 /**
- * An [IconButton] which opens a context menu with the given [items] when clicked.
+ * An [IconButton] which opens a context menu when clicked.
  *
- * TODO get items from LocalContextMenuItems, but it is private
+ * The context menu is populated by the composition-local data provided to
+ * [androidx.compose.foundation.ContextMenuDataProvider]; additional items may be added via [items]. This allows reusing
+ * items in a [ContextMenuArea] and [ContextMenuOverflowButton]; for example:
+ *
+ *   ContextMenuDataProvider(items = { listOf(item1, item2, item3) }) {
+ *     ContextMenuArea(items = { emptyList() }) {
+ *       // ... regular content
+ *       ContextMenuOverflowButton()
+ *     }
+ *   }
  */
 @Composable
 fun ContextMenuOverflowButton(
-    items: () -> List<ContextMenuItem>,
     modifier: Modifier = Modifier,
+    items: () -> List<ContextMenuItem> = { emptyList() },
     enabled: Boolean = true,
     state: ContextMenuState = remember { ContextMenuState() },
 ) {
-    IconButton(
-        modifier = modifier,
-        enabled = enabled,
-        onClick = { state.status = ContextMenuState.Status.Open(rect = Rect.Zero) },
-    ) {
-        Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
-        CompositionLocalProvider(LocalContextMenuButtonAnchor provides true) {
-            LocalContextMenuRepresentation.current.Representation(state, items)
+    CompositionLocalProvider(LocalContextMenuButtonAnchor provides true) {
+        ContextMenuArea(
+            items = items,
+            enabled = false, // do not open on right click
+            state = state,
+        ) {
+            IconButton(
+                modifier = modifier,
+                enabled = enabled,
+                onClick = { state.status = ContextMenuState.Status.Open(rect = Rect.Zero) },
+            ) {
+                Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
+            }
         }
     }
 }

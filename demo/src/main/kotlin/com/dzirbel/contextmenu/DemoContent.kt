@@ -1,6 +1,7 @@
 package com.dzirbel.contextmenu
 
 import androidx.compose.foundation.ContextMenuArea
+import androidx.compose.foundation.ContextMenuDataProvider
 import androidx.compose.foundation.VerticalScrollbar
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -70,25 +71,27 @@ internal fun DemoContent(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) 
 
 @Composable
 private fun DemoItem(name: String) {
-    ContextMenuArea(items = ::demoItems) {
-        Row(
-            modifier = Modifier
-                .clickable {}
-                .padding(8.dp)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
+    ContextMenuDataProvider(items = ::demoItems) {
+        ContextMenuArea(items = { emptyList() }) {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .clickable {}
+                    .padding(8.dp)
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                ContextMenuOverflowButton(items = ::demoItems)
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    ContextMenuOverflowButton()
 
-                Text(name)
+                    Text(name)
+                }
+
+                ContextMenuOverflowButton()
             }
-
-            ContextMenuOverflowButton(items = ::demoItems)
         }
     }
 }
