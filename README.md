@@ -31,7 +31,8 @@ with `./gradlew :demo:run`.
 
 ### Known issues
 
-- Dropdown height extends slightly beyond the window size if the menu is larger than the window.
+- Dropdown height extends slightly beyond the window size if the menu is larger than the window (see
+  https://github.com/JetBrains/compose-multiplatform/issues/3513)
 
 ### Usage
 
