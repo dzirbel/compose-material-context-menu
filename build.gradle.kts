@@ -44,7 +44,7 @@ fun Project.configureKotlin() {
 
             // enable Compose compiler metrics and reports:
             // https://github.com/androidx/androidx/blob/androidx-main/compose/compiler/design/compiler-metrics.md
-            val composeCompilerReportsDir = buildDir.resolve("compose")
+            val composeCompilerReportsDir = layout.buildDirectory.dir("compose").get()
             freeCompilerArgs.addAll(
                 "-P",
                 "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=$composeCompilerReportsDir"
