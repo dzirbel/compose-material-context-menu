@@ -6,6 +6,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,74 +42,95 @@ fun interface ContextMenuIcon {
     }
 
     /**
-     * Renders an [Icon] with the given [Painter], and optional [contentDescription].
+     * Renders an [Icon] with the given [Painter], and optional [contentDescription] and [tint] overriding the default
+     * icon color [ContextMenuColors.icon].
      */
-    data class OfPainter(val painter: Painter, val contentDescription: String? = null) : ContextMenuIcon {
+    data class OfPainter(
+        val painter: Painter,
+        val contentDescription: String? = null,
+        val tint: Color? = null,
+    ) : ContextMenuIcon {
         @Composable
         override fun IconContent(params: ContextMenuParams) {
             Icon(
                 painter = painter,
                 contentDescription = contentDescription,
                 modifier = Modifier.size(params.measurements.iconSize),
-                tint = params.colors.icon,
+                tint = tint ?: params.colors.icon,
             )
         }
     }
 
     /**
-     * Renders an [Icon] with the [Painter] loaded from the given [resourcePath], and optional [contentDescription].
+     * Renders an [Icon] with the [Painter] loaded from the given [resourcePath], and optional [contentDescription] and
+     * [tint] overriding the default icon color [ContextMenuColors.icon].
      */
-    data class OfPainterResource(val resourcePath: String, val contentDescription: String? = null) : ContextMenuIcon {
+    data class OfPainterResource(
+        val resourcePath: String,
+        val contentDescription: String? = null,
+        val tint: Color? = null,
+    ) : ContextMenuIcon {
         @Composable
         override fun IconContent(params: ContextMenuParams) {
             Icon(
                 painter = painterResource(resourcePath),
                 contentDescription = contentDescription,
                 modifier = Modifier.size(params.measurements.iconSize),
-                tint = params.colors.icon,
+                tint = tint ?: params.colors.icon,
             )
         }
     }
 
     /**
-     * Renders an [Icon] with the given [ImageVector], and optional [contentDescription].
+     * Renders an [Icon] with the given [ImageVector], and optional [contentDescription] and [tint] overriding the
+     * default icon color [ContextMenuColors.icon].
      */
-    data class OfVector(val imageVector: ImageVector, val contentDescription: String? = null) : ContextMenuIcon {
+    data class OfVector(
+        val imageVector: ImageVector,
+        val contentDescription: String? = null,
+        val tint: Color? = null,
+    ) : ContextMenuIcon {
         @Composable
         override fun IconContent(params: ContextMenuParams) {
             Icon(
                 imageVector = imageVector,
                 contentDescription = contentDescription,
                 modifier = Modifier.size(params.measurements.iconSize),
-                tint = params.colors.icon,
+                tint = tint ?: params.colors.icon,
             )
         }
     }
 
     /**
-     * Renders an [Icon] with the given [ImageBitmap], and optional [contentDescription].
+     * Renders an [Icon] with the given [ImageBitmap], and optional [contentDescription] and [tint] overriding the
+     * default icon color [ContextMenuColors.icon].
      */
-    data class OfBitmap(val imageBitmap: ImageBitmap, val contentDescription: String? = null) : ContextMenuIcon {
+    data class OfBitmap(
+        val imageBitmap: ImageBitmap,
+        val contentDescription: String? = null,
+        val tint: Color? = null,
+    ) : ContextMenuIcon {
         @Composable
         override fun IconContent(params: ContextMenuParams) {
             Icon(
                 bitmap = imageBitmap,
                 contentDescription = contentDescription,
                 modifier = Modifier.size(params.measurements.iconSize),
-                tint = params.colors.icon,
+                tint = tint ?: params.colors.icon,
             )
         }
     }
 
     /**
-     * Renders shortcut texts for the given [shortcuts].
+     * Renders shortcut texts for the given [shortcuts], with optional [color] overriding the default shortcut text
+     * color [ContextMenuColors.shortcutText].
      */
-    data class OfShortcuts(val shortcuts: List<ContextMenuShortcut>) : ContextMenuIcon {
+    data class OfShortcuts(val shortcuts: List<ContextMenuShortcut>, val color: Color? = null) : ContextMenuIcon {
         constructor(vararg shortcuts: ContextMenuShortcut) : this(shortcuts.toList())
 
         @Composable
         override fun IconContent(params: ContextMenuParams) {
-            Text(shortcuts.joinToString(separator = " "), color = params.colors.text)
+            Text(shortcuts.joinToString(separator = " "), color = color ?: params.colors.shortcutText)
         }
     }
 }

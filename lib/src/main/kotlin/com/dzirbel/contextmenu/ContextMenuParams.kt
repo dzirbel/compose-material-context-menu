@@ -107,20 +107,21 @@ data class ContextMenuColors(
     val text: Color,
 
     /**
-     * [Color] of menu icons.
+     * [Color] of menu item text shortcuts (e.g. "Ctrl+C"); by default equal to the [text] color.
      */
-    val icon: Color,
+    val shortcutText: Color = text,
 
     /**
-     * [Color] of menu dividers.
+     * [Color] of menu icons; by default equal to the [text] color.
      */
-    val divider: Color,
+    val icon: Color = text,
+
+    /**
+     * [Color] of menu dividers; by default 12% opacity of the [text] color.
+     *
+     * Note that divider color is not strongly specified by Material 2, but 12% opacity appears to be the default.
+     */
+    val divider: Color = text.copy(alpha = 0.12f),
 ) {
-    constructor(materialColors: Colors) : this(
-        surface = materialColors.surface,
-        text = materialColors.onSurface,
-        icon = materialColors.onSurface,
-        // divider color is not strongly specified by Material 2, but 12% opacity appears to be the default
-        divider = materialColors.onSurface.copy(alpha = 0.12f),
-    )
+    constructor(materialColors: Colors) : this(surface = materialColors.surface, text = materialColors.onSurface)
 }
