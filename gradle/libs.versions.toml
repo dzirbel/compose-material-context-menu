@@ -1,5 +1,5 @@
 [versions]
-compose = "1.4.3" # https://github.com/jetbrains/compose-jb
+compose = "1.5.0" # https://github.com/jetbrains/compose-jb
 detekt = "1.23.1" # https://github.com/detekt/detekt
 kotlin = "1.9.0" # https://kotlinlang.org/releases.html
 kotlinx-coroutines = "1.7.3" # https://github.com/Kotlin/kotlinx.coroutines

@@ -15,20 +15,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.input.InputModeManager
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.nativeKeyCode
-import androidx.compose.ui.input.key.type
 import androidx.compose.ui.node.Ref
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalInputModeManager
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
-import java.awt.event.KeyEvent
 
 @ExperimentalComposeUiApi
 @Composable
@@ -41,39 +34,7 @@ internal fun ContextMenuPopup(
     val focusManagerRef = remember { Ref<FocusManager>() }
     val inputModeManagerRef = remember { Ref<InputModeManager>() }
 
-    Popup(
-        focusable = true,
-        onDismissRequest = onDismissRequest,
-        popupPositionProvider = popupPositionProvider,
-        onKeyEvent = { keyEvent ->
-            if (keyEvent.type == KeyEventType.KeyDown) {
-                when (keyEvent.key.nativeKeyCode) {
-                    KeyEvent.VK_ESCAPE -> {
-                        onDismissRequest()
-                        true
-                    }
-
-                    KeyEvent.VK_DOWN -> {
-                        inputModeManagerRef.value?.requestInputMode(InputMode.Keyboard)
-                        focusManagerRef.value?.moveFocus(FocusDirection.Next)
-                        true
-                    }
-
-                    KeyEvent.VK_UP -> {
-                        inputModeManagerRef.value?.requestInputMode(InputMode.Keyboard)
-                        focusManagerRef.value?.moveFocus(FocusDirection.Previous)
-                        true
-                    }
-
-                    else -> {
-                        false
-                    }
-                }
-            } else {
-                false
-            }
-        },
-    ) {
+    Popup(popupPositionProvider = popupPositionProvider, onDismissRequest = onDismissRequest) {
         focusManagerRef.value = LocalFocusManager.current
         inputModeManagerRef.value = LocalInputModeManager.current
 
