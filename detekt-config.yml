@@ -966,17 +966,42 @@ style:
     excludes: []
     excludeImports: []
 
-TwitterCompose:
+Compose:
+  ComposableAnnotationNaming:
+    active: true
+  ComposableNaming:
+    active: true
+  ComposableParamOrder:
+    active: true
   CompositionLocalAllowlist:
     active: false
   CompositionLocalNaming:
     active: true
   ContentEmitterReturningValues:
     active: true
-  ModifierComposable:
+  ContentTrailingLambda:
+    active: true
+  ContentSlotReused:
+    active: true
+  DefaultsVisibility:
+    active: true
+  LambdaParameterEventTrailing:
+    active: true
+  LambdaParameterInRestartableEffect:
+    active: true
+  Material2:
+    active: false
+  ModifierClickableOrder:
+    active: true
+  ModifierComposed:
     active: true
   ModifierMissing:
-    active: false
+    active: true
+    checkModifiersForVisibility: all
+  ModifierNaming:
+    active: true
+  ModifierNotUsedAtRoot:
+    active: true
   ModifierReused:
     active: true
   ModifierWithoutDefault:
@@ -985,15 +1010,22 @@ TwitterCompose:
     active: true
   MutableParams:
     active: true
-  ComposableNaming:
+  MutableStateAutoboxing:
     active: true
-  ComposableParamOrder:
+  MutableStateParam:
+    active: true
+  ParameterNaming:
+    active: true
+  PreviewAnnotationNaming:
     active: true
   PreviewNaming:
     active: true
+    previewNamingStrategy: suffix
   PreviewPublic:
     active: true
   RememberMissing:
+    active: true
+  RememberContentMissing:
     active: true
   UnstableCollections:
     active: true

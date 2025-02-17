@@ -116,11 +116,13 @@ open class ContextMenuGroup(
      * The icon displayed at the end of the item; by default an arrow pointing to the right.
      */
     @Composable
-    open fun EndIcon(params: ContextMenuParams) {
+    @Suppress("ModifierWithoutDefault") // not supported for open functions; perhaps refactor away from inheritance
+    open fun EndIcon(params: ContextMenuParams, modifier: Modifier) {
         Icon(
             painter = painterResource(Res.drawable.arrow_right),
             contentDescription = "Expand",
             tint = params.colors.icon,
+            modifier = modifier,
         )
     }
 }

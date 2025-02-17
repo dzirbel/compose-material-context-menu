@@ -33,8 +33,8 @@ fun Project.configureDetekt() {
     }
 
     dependencies {
+        detektPlugins(libs.detekt.compose.rules)
         detektPlugins(libs.detekt.formatting)
-        detektPlugins(libs.twitter.compose.rules)
     }
 }
 

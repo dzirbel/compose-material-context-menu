@@ -33,8 +33,8 @@ import compose_material_context_menu.demo.generated.resources.light_mode
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-internal fun DemoContent(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+internal fun DemoContent(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = modifier) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -74,11 +74,11 @@ internal fun DemoContent(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) 
 }
 
 @Composable
-private fun DemoItem(name: String) {
+private fun DemoItem(name: String, modifier: Modifier = Modifier) {
     ContextMenuDataProvider(items = ::demoItems) {
         ContextMenuArea(items = { emptyList() }) {
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .clickable {}
                     .padding(8.dp)
                     .fillMaxWidth(),

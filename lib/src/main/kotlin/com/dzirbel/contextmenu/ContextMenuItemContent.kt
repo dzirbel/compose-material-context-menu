@@ -116,7 +116,7 @@ private fun ContextMenuGroup(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(item.label, color = params.colors.text)
-            item.EndIcon(params)
+            item.EndIcon(params, Modifier)
         }
 
         if (menuOpen) {
