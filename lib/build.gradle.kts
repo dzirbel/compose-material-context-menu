@@ -21,6 +21,12 @@ java {
     withSourcesJar()
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.dzirbel.contextmenu"
+    generateResClass = always
+}
+
 publishing {
     publications {
         create<MavenPublication>("maven") {

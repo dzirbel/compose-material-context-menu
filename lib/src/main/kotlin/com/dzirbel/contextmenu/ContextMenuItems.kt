@@ -11,9 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import compose_material_context_menu.lib.generated.resources.Res
-import compose_material_context_menu.lib.generated.resources.arrow_right
 import org.jetbrains.compose.resources.painterResource
 
 /**

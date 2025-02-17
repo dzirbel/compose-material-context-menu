@@ -7,10 +7,6 @@ import androidx.compose.foundation.text.LocalTextContextMenu
 import androidx.compose.foundation.text.TextContextMenu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalLocalization
-import compose_material_context_menu.lib.generated.resources.Res
-import compose_material_context_menu.lib.generated.resources.content_copy
-import compose_material_context_menu.lib.generated.resources.content_cut
-import compose_material_context_menu.lib.generated.resources.content_paste
 
 /**
  * Provides [MaterialContextMenuItem] items with icons and shortcuts for text field context menus, making them slightly
