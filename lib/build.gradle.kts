@@ -32,7 +32,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "io.github.dzirbel"
             artifactId = rootProject.name
-            version = "0.3.0"
+            version = "0.3.1"
 
             from(components["java"])
 
