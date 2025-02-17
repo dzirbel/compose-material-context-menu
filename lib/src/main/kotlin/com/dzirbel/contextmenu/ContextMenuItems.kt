@@ -40,7 +40,8 @@ open class MaterialContextMenuItem(
      * Displays the [label] of this item as a [Text] Composable; may be overridden for custom text styling.
      */
     @Composable
-    open fun Text(params: ContextMenuParams, modifier: Modifier = Modifier) {
+    @Suppress("ModifierWithoutDefault") // not supported for open functions; perhaps refactor away from inheritance
+    open fun Text(params: ContextMenuParams, modifier: Modifier) {
         Text(label, color = params.colors.text.copy(alpha = LocalContentAlpha.current), modifier = modifier)
     }
 
