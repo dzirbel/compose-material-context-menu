@@ -2,7 +2,7 @@
 compose = "1.7.3" # https://github.com/jetbrains/compose-jb
 detekt = "1.23.7" # https://github.com/detekt/detekt
 kotlin = "2.1.10" # https://kotlinlang.org/releases.html
-kotlinx-coroutines = "1.7.3" # https://github.com/Kotlin/kotlinx.coroutines
+kotlinx-coroutines = "1.10.1" # https://github.com/Kotlin/kotlinx.coroutines
 twitter-compose-rules = "0.0.26" # https://github.com/twitter/compose-rules
 
 [libraries]
