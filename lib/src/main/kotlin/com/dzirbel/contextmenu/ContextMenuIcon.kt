@@ -13,6 +13,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import com.dzirbel.contextmenu.ContextMenuIcon.Empty
 import com.dzirbel.contextmenu.ContextMenuIcon.OfShortcuts
+import org.jetbrains.compose.resources.DrawableResource
+import org.jetbrains.compose.resources.painterResource
 import java.util.Locale
 
 /**
@@ -62,18 +64,18 @@ fun interface ContextMenuIcon {
     }
 
     /**
-     * Renders an [Icon] with the [Painter] loaded from the given [resourcePath], and optional [contentDescription] and
+     * Renders an [Icon] with the [Painter] loaded from the given [resource], and optional [contentDescription] and
      * [tint] overriding the default icon color [ContextMenuColors.icon].
      */
-    data class OfPainterResource(
-        val resourcePath: String,
+    data class OfResource(
+        val resource: DrawableResource,
         val contentDescription: String? = null,
         val tint: Color? = null,
     ) : ContextMenuIcon {
         @Composable
         override fun IconContent(params: ContextMenuParams) {
             Icon(
-                painter = painterResource(resourcePath),
+                painter = painterResource(resource),
                 contentDescription = contentDescription,
                 modifier = Modifier.size(params.measurements.iconSize),
                 tint = tint ?: params.colors.icon,

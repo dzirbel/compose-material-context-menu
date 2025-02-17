@@ -12,6 +12,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import compose_material_context_menu.lib.generated.resources.Res
+import compose_material_context_menu.lib.generated.resources.arrow_right
+import org.jetbrains.compose.resources.painterResource
 
 /**
  * A [ContextMenuItem] with additional properties for Material styling.
@@ -113,7 +116,11 @@ open class ContextMenuGroup(
      */
     @Composable
     open fun EndIcon(params: ContextMenuParams) {
-        Icon(painter = painterResource("arrow_right.svg"), contentDescription = "Expand", tint = params.colors.icon)
+        Icon(
+            painter = painterResource(Res.drawable.arrow_right),
+            contentDescription = "Expand",
+            tint = params.colors.icon,
+        )
     }
 }
 

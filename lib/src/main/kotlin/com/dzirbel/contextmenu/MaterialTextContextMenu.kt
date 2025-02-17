@@ -7,6 +7,10 @@ import androidx.compose.foundation.text.LocalTextContextMenu
 import androidx.compose.foundation.text.TextContextMenu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalLocalization
+import compose_material_context_menu.lib.generated.resources.Res
+import compose_material_context_menu.lib.generated.resources.content_copy
+import compose_material_context_menu.lib.generated.resources.content_cut
+import compose_material_context_menu.lib.generated.resources.content_paste
 
 /**
  * Provides [MaterialContextMenuItem] items with icons and shortcuts for text field context menus, making them slightly
@@ -31,7 +35,7 @@ object MaterialTextContextMenu : TextContextMenu {
                     MaterialContextMenuItem(
                         label = localization.cut,
                         onClick = it,
-                        leadingIcon = ContextMenuIcon.OfPainterResource("content_cut.svg"),
+                        leadingIcon = ContextMenuIcon.OfResource(Res.drawable.content_cut),
                         trailingIcon = ContextMenuIcon.OfShortcuts(ContextMenuShortcut("X")),
                     )
                 },
@@ -39,7 +43,7 @@ object MaterialTextContextMenu : TextContextMenu {
                     MaterialContextMenuItem(
                         label = localization.copy,
                         onClick = it,
-                        leadingIcon = ContextMenuIcon.OfPainterResource("content_copy.svg"),
+                        leadingIcon = ContextMenuIcon.OfResource(Res.drawable.content_copy),
                         trailingIcon = ContextMenuIcon.OfShortcuts(ContextMenuShortcut("C")),
                     )
                 },
@@ -47,7 +51,7 @@ object MaterialTextContextMenu : TextContextMenu {
                     MaterialContextMenuItem(
                         label = localization.paste,
                         onClick = it,
-                        leadingIcon = ContextMenuIcon.OfPainterResource("content_paste.svg"),
+                        leadingIcon = ContextMenuIcon.OfResource(Res.drawable.content_paste),
                         trailingIcon = ContextMenuIcon.OfShortcuts(ContextMenuShortcut("V")),
                     )
                 },

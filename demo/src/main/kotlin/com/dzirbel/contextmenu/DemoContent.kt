@@ -27,6 +27,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import compose_material_context_menu.demo.generated.resources.Res
+import compose_material_context_menu.demo.generated.resources.dark_mode
+import compose_material_context_menu.demo.generated.resources.light_mode
+import org.jetbrains.compose.resources.painterResource
 
 @Composable
 internal fun DemoContent(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) {
@@ -40,7 +44,7 @@ internal fun DemoContent(lightTheme: Boolean, setLightTheme: (Boolean) -> Unit) 
 
             IconButton(onClick = { setLightTheme(!lightTheme) }) {
                 Icon(
-                    painter = painterResource(if (lightTheme) "light_mode.svg" else "dark_mode.svg"),
+                    painter = painterResource(if (lightTheme) Res.drawable.light_mode else Res.drawable.dark_mode),
                     contentDescription = "Toggle theme",
                 )
             }

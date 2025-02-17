@@ -12,6 +12,7 @@ allprojects {
 subprojects {
     repositories {
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        google()
     }
 
     configurations.all {

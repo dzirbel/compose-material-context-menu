@@ -8,6 +8,7 @@ dependencies {
     implementation(project(":lib"))
 
     implementation(compose.desktop.currentOs)
+    implementation(compose.components.resources)
 }
 
 compose.desktop {
